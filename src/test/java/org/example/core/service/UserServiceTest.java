@@ -4,6 +4,7 @@ import org.example.core.domain.User;
 import org.example.core.domain.Workout;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка добавления пользователя")
     void addUser() {
         User user = userService.addUser("username", "password", false);
         assertNotNull(user);
@@ -36,6 +38,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка получения всех пользователей")
     void getAllUsers() {
         User user1 = userService.addUser("username1", "password1", false);
         User user2 = userService.addUser("username2", "password2", true);
@@ -47,6 +50,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка добавления тренировки пользователю")
     void addWorkout() {
         User user = userService.addUser("username", "password", false);
         Workout workout = new Workout(LocalDate.now(), "Бег", 30, 300);
@@ -58,6 +62,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка добавления тренировки пользователю, если тренировка уже существует")
     void addWorkout_WorkoutAlreadyExists() {
         User user = userService.addUser("username", "password", false);
         Workout workout1 = new Workout(LocalDate.now(), "Бег", 10, 300);
@@ -72,6 +77,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка получения пользователя по имени")
     void getUserByUsername() {
         User user1 = userService.addUser("username1", "password1", false);
         User user2 = userService.addUser("username2", "password2", true);
@@ -84,6 +90,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка получения пользователя по имени, если пользователь не найден")
     void getUserByUsername_UserNotFound() {
         List<User> initialUsers = new ArrayList<>(userService.getAllUsers());
         User user = userService.getUserByUsername("non-existing-username");

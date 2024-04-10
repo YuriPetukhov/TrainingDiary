@@ -2,6 +2,7 @@ package org.example.core.service;
 
 import org.example.core.domain.User;
 import org.example.core.domain.Workout;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -11,7 +12,9 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WorkoutServiceTest {
+
     @Test
+    @DisplayName("Проверка добавления тренировки")
     void testAddWorkout() {
 
         User user = new User("username", "password", false);
@@ -30,6 +33,7 @@ class WorkoutServiceTest {
 
 
     @Test
+    @DisplayName("Проверка редактирования тренировки")
     void testEditWorkout() {
         User user = new User("username", "password", false);
         Workout workout = new Workout(LocalDate.now(), "Бег", 30, 200);
@@ -52,6 +56,7 @@ class WorkoutServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка удаления тренировки")
     void testDeleteWorkout() {
         User user = new User("username", "password", false);
         Workout workout = new Workout(LocalDate.now(), "Бег", 30, 200);
@@ -68,6 +73,7 @@ class WorkoutServiceTest {
 
 
     @Test
+    @DisplayName("Проверка получения общего количества сожженных калорий")
     void testGetCaloriesBurnedTotal() {
 
         User user = new User("username", "password", false);
@@ -83,6 +89,7 @@ class WorkoutServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка получения количества сожженных калорий по дате")
     void testGetCaloriesBurnedByDate() {
 
         User user = new User("username", "password", false);
@@ -99,6 +106,7 @@ class WorkoutServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка наличия тренировки по идентификатору")
     void testCheckWorkoutById() {
         User user = new User("username", "password", false);
         Workout workout = new Workout(LocalDate.now(), "Бег", 30, 200);
@@ -114,6 +122,7 @@ class WorkoutServiceTest {
 
 
     @Test
+    @DisplayName("Проверка получения общей продолжительности тренировок")
     void testGetTotalDuration() {
 
         User user = new User("username", "password", false);
