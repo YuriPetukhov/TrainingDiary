@@ -2,30 +2,31 @@ package org.example.core.service;
 
 import org.example.core.domain.User;
 import org.example.core.domain.Workout;
+import org.example.core.enums.UserRole;
 import org.example.logger.Logger;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Сервис для работы с пользователями и тренировками.
  */
 public class UserService {
 
-    private static final List<User> users = new ArrayList<>();
+    private static final Map<String, User> users = new HashMap<>();
 
     /**
      * Добавляет нового пользователя.
      *
      * @param username имя пользователя
      * @param password пароль
-     * @param isAdmin является ли пользователь администратором
+     * @param role роль пользователя
      * @return созданный пользователь
      */
-    public User addUser(String username, String password, boolean isAdmin) {
-
-        User user = new User(username, password, isAdmin);
-        users.add(user);
+    public User addUser(String username, String password, UserRole role) {
+        User user = new User(username, password, role);
+        users.put(username, user);
         return user;
     }
 
@@ -35,7 +36,7 @@ public class UserService {
      * @return список пользователей
      */
     public List<User> getAllUsers() {
-        return users;
+        return List.copyOf(users.values());
     }
 
     /**
@@ -51,7 +52,7 @@ public class UserService {
             return;
         }
 
-        for (Workout existingWorkout : user.getWorkouts()) {
+        for (Workout existingWorkout : user.getWorkouts().values()) {
             if (existingWorkout.getDate().equals(workout.getDate()) && existingWorkout.getType().equals(workout.getType())) {
                 System.out.println("Тренировка этого типа уже добавлена на эту дату.");
                 Logger.log("Добавление тренировки", currentUser.getUsername(), false);
@@ -61,7 +62,7 @@ public class UserService {
 
         System.out.println("Тренировка добавлена");
         Logger.log("Добавление тренировки", currentUser.getUsername(), true);
-        user.getWorkouts().add(workout);
+        user.addWorkout(workout);
     }
 
     /**
@@ -71,11 +72,6 @@ public class UserService {
      * @return пользователь или `null`, если пользователь не найден
      */
     public User getUserByUsername(String username) {
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null;
+        return users.get(username);
     }
 }

@@ -2,6 +2,7 @@ package org.example.in;
 
 import org.example.core.domain.User;
 import org.example.core.domain.Workout;
+import org.example.core.enums.UserRole;
 import org.example.core.service.UserService;
 import org.example.core.service.WorkoutService;
 import org.example.logger.Logger;
@@ -69,21 +70,22 @@ public class WorkoutUserInteraction {
      * @param currentUser текущий пользователь
      */
     public static void viewWorkouts(User currentUser) {
-        if (currentUser.isAdmin()) {
+        if (currentUser.getRole().equals(UserRole.ADMIN)) {
             System.out.println("Все тренировки пользователей:");
+            Logger.log("Получение списка тренировок всех пользователей", currentUser.getUsername(), true);
             for (User user : userService.getAllUsers()) {
                 System.out.println("Тренировки пользователя " + user.getUsername() + ":");
-                for (Workout workout : user.getWorkouts()) {
+                for (Workout workout : user.getWorkouts().values()) {
                     System.out.println(workout);
                 }
             }
         } else {
-            List<Workout> workouts = currentUser.getWorkouts();
-            workouts.sort(Comparator.comparing(Workout::getDate));
+            Map<Integer, Workout> workouts = currentUser.getWorkouts();
             System.out.println("Ваши тренировки:");
-            for (Workout workout : workouts) {
-                System.out.println(workout);
-            }
+            Logger.log("Получение списка тренировок", currentUser.getUsername(), true);
+            workouts.values().stream()
+                    .sorted(Comparator.comparing(Workout::getDate))
+                    .forEach(System.out::println);
         }
     }
 
@@ -96,9 +98,7 @@ public class WorkoutUserInteraction {
 
         int id = InputValidator.promptForPositiveInt("Введите идентификатор тренировки:");
 
-        boolean result = workoutService.checkWorkoutById(currentUser, id);
-
-        if (!result) {
+        if (!currentUser.getWorkouts().containsKey(id)) {
             System.out.println("Тренировка не найдена");
             Logger.log("Редактирование тренировки", currentUser.getUsername(), false);
             return;

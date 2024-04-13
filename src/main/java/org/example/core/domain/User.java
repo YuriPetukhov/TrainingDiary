@@ -1,7 +1,9 @@
 package org.example.core.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.example.core.enums.UserRole;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -20,27 +22,27 @@ public class User {
     private final String password;
 
     /**
-     * Флаг, указывающий, является ли пользователь администратором.
+     * Роль пользователя.
      */
-    private final boolean isAdmin;
+    private final UserRole role;
 
     /**
-     * Список тренировок пользователя.
+     * Мапа тренировок пользователя, где ключом является ID тренировки, а значением - сама тренировка.
      */
-    private final List<Workout> workouts;
+    private final Map<Integer, Workout> workouts;
 
     /**
      * Конструктор класса User.
      *
      * @param username имя пользователя
      * @param password пароль пользователя
-     * @param isAdmin флаг, указывающий, является ли пользователь администратором
+     * @param role роль пользователя
      */
-    public User(String username, String password, boolean isAdmin) {
+    public User(String username, String password, UserRole role) {
         this.username = username;
         this.password = password;
-        this.isAdmin = isAdmin;
-        this.workouts = new ArrayList<>();
+        this.role = role;
+        this.workouts = new HashMap<>();
     }
 
     public String getUsername() {
@@ -51,11 +53,11 @@ public class User {
         return password;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public UserRole getRole() {
+        return role;
     }
 
-    public List<Workout> getWorkouts() {
+    public Map<Integer, Workout> getWorkouts() {
         return workouts;
     }
 
@@ -66,32 +68,42 @@ public class User {
      * @return тренировка с указанным идентификатором или null, если такой тренировки нет
      */
     public Workout getWorkoutById(int id) {
-        for (Workout workout : workouts) {
-            if (workout.getId() == id) {
-                return workout;
-            }
-        }
-        return null;
+        return workouts.get(id);
     }
 
     /**
-     * Удаляет тренировку из списка тренировок пользователя.
+     * Добавляет тренировку в мапу тренировок пользователя.
      *
-     * @param workout тренировка, которую нужно удалить
+     * @param workout тренировка, которую нужно добавить
      */
-    public void removeWorkout(Workout workout) {
-        workouts.remove(workout);
+    public void addWorkout(Workout workout) {
+        workouts.put(workout.getId(), workout);
     }
+
+    /**
+     * Удаляет тренировку из мапы тренировок пользователя.
+     *
+     * @param id тренировки, которую нужно удалить
+     */
+    public boolean removeWorkoutById(int id) {
+        if (workouts.containsKey(id)) {
+            workouts.remove(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return isAdmin == user.isAdmin && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return role == user.role && Objects.equals(username, user.username) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, isAdmin);
+        return Objects.hash(username, password, role);
     }
 }

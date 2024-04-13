@@ -1,6 +1,7 @@
 package org.example.in;
 
 import org.example.core.domain.User;
+import org.example.logger.Logger;
 import org.example.security.AuthService;
 
 import java.util.Scanner;

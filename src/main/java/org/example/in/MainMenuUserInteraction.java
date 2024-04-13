@@ -1,6 +1,7 @@
 package org.example.in;
 
 import org.example.core.domain.User;
+import org.example.logger.Logger;
 
 import java.util.*;
 
@@ -54,6 +55,7 @@ public class MainMenuUserInteraction {
                 case 6 -> currentUser = registerOrauthenticateUser();
                 case 7, 0 -> {
                     System.out.println("До свидания!");
+                    Logger.log("Завершение программы", currentUser.getUsername(), true);
                     return;
                 }
                 default -> System.out.println("Неверный выбор");

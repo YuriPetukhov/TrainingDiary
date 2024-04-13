@@ -6,6 +6,7 @@ import org.example.core.service.WorkoutService;
 import org.example.logger.Logger;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -69,17 +70,19 @@ public class StatisticsUserInteraction {
      * @param currentUser текущий пользователь
      */
     public static void getFilteredWorkouts(User currentUser) {
-
         LocalDate startDate = promptForDate("Введите начальную дату (формат гггг-мм-дд):");
         LocalDate endDate = promptForDate("Введите конечную дату (формат гггг-мм-дд):");
         String type = promptForNonEmptyInput("Введите тип тренировки:");
 
         List<Workout> filteredWorkouts = workoutService.getFilteredWorkouts(currentUser.getWorkouts(), startDate, endDate, type);
 
-
         Logger.log("Получение отфильтрованного списка тренировок", currentUser.getUsername(), true);
 
         System.out.println("Отфильтрованные тренировки:");
-        System.out.println(filteredWorkouts);
+        for (Workout workout : filteredWorkouts) {
+            System.out.println(workout);
+        }
     }
+
+
 }

@@ -1,11 +1,14 @@
 package org.example.security;
 
 import org.example.core.domain.User;
+import org.example.core.enums.UserRole;
 import org.example.core.service.UserService;
 import org.example.logger.Logger;
 
 import java.io.Console;
-import java.util.*;
+import java.util.List;
+
+import static org.example.in.InputValidator.promptForNonEmptyInput;
 
 /**
  * Сервис для работы с авторизацией и регистрацией пользователей.
@@ -23,25 +26,29 @@ public class AuthService {
      */
     public static User registerUser(String username, String role) {
 
+        String password1 = null;
         Console console = System.console();
         if (console == null) {
-            System.out.println("Консоль не доступна, используйте другой способ ввода пароля.");
-            return null;
+            System.out.println("Консоль не доступна, поэтому пароль будет выведен на экран.");
+            password1 = promptForNonEmptyInput("Введите пароль:");
+        } else {
+
+            char[] passwordArray1 = console.readPassword("Введите пароль:");
+            password1 = new String(passwordArray1);
+
+            char[] passwordArray2 = console.readPassword("Повторите пароль:");
+            String password2 = new String(passwordArray2);
+
+            if (!password1.equals(password2)) {
+                System.out.println("Пароли не совпадают. Попробуйте снова.");
+                return null;
+            }
         }
-
-        char[] passwordArray1 = console.readPassword("Введите пароль:");
-        String password1 = new String(passwordArray1);
-
-        char[] passwordArray2 = console.readPassword("Повторите пароль:");
-        String password2 = new String(passwordArray2);
-
-        if (!password1.equals(password2)) {
-            System.out.println("Пароли не совпадают. Попробуйте снова.");
-            return null;
+        UserRole userRole = UserRole.USER;
+        if (role.equals(UserRole.ADMIN.toString().toLowerCase())) {
+            userRole = UserRole.ADMIN;
         }
-
-        boolean isAdmin = role.equals("admin");
-        User user = userService.addUser(username, password1, isAdmin);
+        User user = userService.addUser(username, password1, userRole);
         Logger.log("Регистрация пользователя", user.getUsername(), true);
         return user;
     }
@@ -54,16 +61,19 @@ public class AuthService {
      */
     public static User authenticateUser(String username) {
         Console console = System.console();
+        String password = null;
         if (console == null) {
-            System.out.println("Консоль не доступна, используйте другой способ ввода пароля.");
-            return null;
+            System.out.println("Консоль не доступна, поэтому пароль будет выведен на экран.");
+            password = promptForNonEmptyInput("Введите пароль:");
+        } else {
+            char[] passwordArray = console.readPassword("Введите пароль:");
+            password = new String(passwordArray);
         }
 
-        char[] passwordArray = console.readPassword("Введите пароль:");
-
         List<User> users = userService.getAllUsers();
+        String finalPassword = password;
         User currentUser = users.stream()
-                .filter(u -> u.getUsername().equals(username) && Arrays.equals(u.getPassword().toCharArray(), passwordArray))
+                .filter(u -> u.getUsername().equals(username) && u.getPassword().equals(finalPassword))
                 .findFirst()
                 .orElse(null);
         if (currentUser == null) {
@@ -72,5 +82,6 @@ public class AuthService {
         Logger.log("Авторизация пользователя", currentUser != null ? currentUser.getUsername() : "Unknown", true);
         return currentUser;
     }
+
 
 }
