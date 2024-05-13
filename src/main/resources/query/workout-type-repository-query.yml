@@ -1,0 +1,19 @@
+workout_type_repository_query:
+  WORKOUT_TYPE_SAVE_QUERY:
+    "INSERT INTO workout_types (type_name, user_id) VALUES (?, ?) RETURNING id"
+  WORKOUT_TYPE_UPDATE_QUERY:
+    "UPDATE workout_types SET type_name = ? WHERE id = ?"
+  WORKOUT_TYPE_FIND_ALL_QUERY:
+    "SELECT * FROM workout_types"
+  WORKOUT_TYPE_FIND_BY_ID_QUERY:
+    "SELECT * FROM workout_types WHERE id = ?"
+  WORKOUT_TYPE_DELETE_QUERY:
+    "DELETE FROM workout_types WHERE id = ?"
+  WORKOUT_TYPE_IS_WORKOUT_TYPE_WITH_NAME_AND_USER_ID_EXISTS:
+    "SELECT * FROM workout_types WHERE type_name = ? AND user_id = ?"
+  WORKOUT_TYPE_FIND_TYPE_NAMES_BY_USER_ID:
+    "SELECT type_name FROM workout_types WHERE user_id = ? ORDER BY id"
+  WORKOUT_TYPE_FIND_BY_NAME_AND_USER_ID:
+    "SELECT * FROM workout_types WHERE type_name = ? AND user_id = ?"
+  WORKOUT_TYPE_FIND_BY_ID_AND_USER_ID:
+    "SELECT * FROM workout_types WHERE id = ? AND user_id = ?"

@@ -1,0 +1,14 @@
+user_repository_query:
+  USER_SAVE_QUERY:
+    "INSERT INTO users (username, password, role) VALUES (?, ?, ?) RETURNING id"
+  USER_UPDATE_QUERY:
+    "UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?"
+  USER_FIND_ALL_QUERY:
+    "SELECT * FROM users"
+  USER_FIND_BY_ID_QUERY:
+    "SELECT * FROM users WHERE id = ?"
+  USER_DELETE_QUERY:
+    "DELETE FROM users WHERE id = ?"
+  USER_FIND_BY_NAME_QUERY:
+    "SELECT * FROM users WHERE username = ?"
+

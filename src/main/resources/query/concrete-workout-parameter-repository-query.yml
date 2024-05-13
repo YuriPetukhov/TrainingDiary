@@ -1,0 +1,15 @@
+concrete_workout_parameter_repository_query:
+  CONCRETE_PARAMETER_SAVE_QUERY:
+    "INSERT INTO concrete_workout_type_parameters (parameter_name, value, concrete_workout_type_id) VALUES (?, ?, ?) RETURNING id"
+  CONCRETE_PARAMETER_SAVE_ALL_QUERY:
+    "INSERT INTO concrete_workout_type_parameters (parameter_name, value, concrete_workout_type_id) VALUES "
+  CONCRETE_PARAMETER_UPDATE_QUERY:
+    "UPDATE concrete_workout_type_parameters SET value = ? WHERE id = ?"
+  CONCRETE_PARAMETER_FIND_ALL_QUERY:
+    "SELECT * FROM concrete_workout_type_parameters"
+  CONCRETE_PARAMETER_FIND_BY_ID_QUERY:
+    "SELECT * FROM concrete_workout_type_parameters WHERE id = ?"
+  CONCRETE_PARAMETER_FIND_BY_TYPE_ID_QUERY:
+    "SELECT * FROM concrete_workout_type_parameters WHERE concrete_workout_type_id = ?"
+  CONCRETE_PARAMETER_DELETE_QUERY:
+    "DELETE FROM concrete_workout_type_parameters WHERE concrete_workout_type_id = ?"

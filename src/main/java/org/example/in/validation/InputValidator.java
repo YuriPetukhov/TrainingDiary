@@ -1,13 +1,16 @@
-package org.example.in;
+package org.example.in.validation;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
  * Класс для валидации ввода пользователя.
  */
 public class InputValidator {
+
+    private static final int MAX_ATTEMPTS = 3;
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -17,7 +20,7 @@ public class InputValidator {
      * @param message сообщение, которое будет выводиться пользователю
      * @return введенное пользователем значение
      */
-    public static String promptForNonEmptyInput(String message) {
+    public String promptForNonEmptyInput(String message) {
         String input;
         do {
             System.out.println(message);
@@ -29,12 +32,19 @@ public class InputValidator {
         return input;
     }
 
+    public String promptForInput(String message) {
+        String input;
+        System.out.println(message);
+        input = scanner.nextLine().trim();
+        return input;
+    }
+
     /**
      * Запрашивает у пользователя роль (user/admin).
      *
      * @return введенная пользователем роль
      */
-    public static String promptForRole() {
+    public String promptForRole() {
         String role;
         do {
             role = promptForNonEmptyInput("Введите роль (user/admin):").toLowerCase();
@@ -51,7 +61,7 @@ public class InputValidator {
      * @param message сообщение, которое будет выводиться пользователю
      * @return введенная пользователем дата
      */
-    public static LocalDate promptForDate(String message) {
+    public LocalDate promptForDate(String message) {
         LocalDate date;
         do {
             String input = promptForNonEmptyInput(message);
@@ -71,7 +81,7 @@ public class InputValidator {
      * @param message сообщение, которое будет выводиться пользователю
      * @return введенное пользователем положительное целое число
      */
-    public static int promptForPositiveInt(String message) {
+    public int promptForPositiveInt(String message) {
         int value;
         do {
             String input = promptForNonEmptyInput(message);
@@ -95,7 +105,7 @@ public class InputValidator {
      * @param inputDate строка ввода
      * @return дата, соответствующая строке ввода
      */
-    public static LocalDate parseDate(String inputDate) {
+    public LocalDate parseDate(String inputDate) {
         LocalDate date = null;
         while (!inputDate.isEmpty()) {
             if (inputDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
@@ -119,7 +129,7 @@ public class InputValidator {
      * @param input строка ввода
      * @return валидное положительное целое число
      */
-    public static int validatePositiveInt(String input) {
+    public int validatePositiveInt(String input) {
         int value = 0;
         while (!input.isEmpty()) {
             try {
@@ -137,4 +147,45 @@ public class InputValidator {
         return value;
     }
 
+    public boolean containsIgnoreCase(List<String> list, String element) {
+        for (String item : list) {
+            if (item.equalsIgnoreCase(element)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int promptForNumberChoose(int min, int max) {
+        int value = 0;
+        int attempts = 0;
+        do {
+            String input = scanner.nextLine();
+            try {
+                value = Integer.parseInt(input);
+                if (value >= min && value <= max) {
+                    break;
+                } else {
+                    System.out.println("Значение должно быть целым числом от " + min + " до " + max + ".");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Неверный формат числа. Пожалуйста, введите целое число.");
+            }
+            attempts++;
+        } while (attempts < MAX_ATTEMPTS);
+        if (attempts == MAX_ATTEMPTS) {
+            System.out.println("Превышено количество попыток. Завершение программы.");
+            System.exit(1);
+        }
+        return value;
+    }
+
+    public Integer validateNeuValue() {
+        int newValue = 0;
+        String typeInput = scanner.nextLine().trim();
+        if (!typeInput.isEmpty()) {
+            newValue = validatePositiveInt(typeInput);
+        }
+        return newValue;
+    }
 }

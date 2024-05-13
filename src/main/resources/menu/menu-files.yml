@@ -1,0 +1,5 @@
+menu_files:
+  main_menu: "src/main/resources/menu/main-menu.yml"
+  auth_menu: "src/main/resources/menu/auth-menu.yml"
+  statistic_menu: "src/main/resources/menu/statistic-menu.yml"
+  workout_menu: "src/main/resources/menu/workout-menu.yml"

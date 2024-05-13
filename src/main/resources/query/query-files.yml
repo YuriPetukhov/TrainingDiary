@@ -1,0 +1,8 @@
+query_files:
+  user_repository_query: "src/main/resources/query/user-repository-query.yml"
+  workout_repository_query: "src/main/resources/query/workout-repository-query.yml"
+  workout_type_repository_query: "src/main/resources/query/workout-type-repository-query.yml"
+  workout_parameter_repository_query: "src/main/resources/query/workout-repository-query.yml"
+  concrete_workout_type_repository_query: "src/main/resources/query/concrete-workout-type-repository-query.yml"
+  concrete_workout_parameter_repository_query: "src/main/resources/query/concrete-workout-parameter-repository-query.yml"
+  log_repository_query: "src/main/resources/query/log-repository-query.yml"

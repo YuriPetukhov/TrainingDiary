@@ -1,0 +1,4 @@
+liquibase:
+  change-log: db/changelog/changelog-master.xml
+  defaultSchemaName: diary_schema
+  liquibase-schema-name: service_schema

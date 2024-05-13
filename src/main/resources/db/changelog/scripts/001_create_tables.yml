@@ -1,0 +1,156 @@
+databaseChangeLog:
+  - changeSet:
+      id: tables
+      author: YuriPetukhov
+      changes:
+        - createTable:
+            tableName: users
+            schemaName: diary_schema
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: workouts
+            schemaName: diary_schema
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: date
+                  type: date
+                  constraints:
+                    nullable: true
+              - column:
+                  name: concrete_workout_type_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+              - column:
+                  name: duration
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: calories_burned
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: workout_types
+            schemaName: diary_schema
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: type_name
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: workout_type_parameters
+            schemaName: diary_schema
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: parameter_name
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+              - column:
+                  name: workout_type_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: concrete_workout_types
+            schemaName: diary_schema
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: type_name
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+              - column:
+                  name: workout_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: concrete_workout_type_parameters
+            schemaName: diary_schema
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: parameter_name
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+              - column:
+                  name: value
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: concrete_workout_type_id
+                  type: bigint
+                  constraints:
+                    nullable: false

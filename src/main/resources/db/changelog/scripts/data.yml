@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_example_data
+      author: username
+      changes:
+        - sql:
+            sql: INSERT INTO users (username, password, role) VALUES
+              ('user1', 'password1', 'USER'),
+              ('user2', 'password2', 'USER')
+        - sql:
+            sql: INSERT INTO workouts (date, concrete_workout_type_id, duration, calories_burned, user_id) VALUES
+              ('2023-01-01', 1, 60, 300, 1),
+              ('2023-01-02', 2, 45, 250, 1),
+              ('2023-01-03', 3, 30, 150, 2)
+        - sql:
+            sql: INSERT INTO workout_types (type_name, user_id) VALUES
+              ('Running', 1),
+              ('Cycling', 1),
+              ('Swimming', 2)
+        - sql:
+            sql: INSERT INTO workout_type_parameters (parameter_name, workout_type_id) VALUES
+              ('distance', 1),
+              ('time', 2),
+              ('speed', 3)
+        - sql:
+            sql: INSERT INTO concrete_workout_types (type_name, workout_id) VALUES
+              ('Easy run', 1),
+              ('Interval training', 2),
+              ('Long run', 3)
+        - sql:
+            sql: INSERT INTO concrete_workout_type_parameters (parameter_name, value, concrete_workout_type_id) VALUES
+              ('distance', 5, 1),
+              ('time', 30, 2),
+              ('speed', 7, 3)

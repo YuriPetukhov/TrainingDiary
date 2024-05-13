@@ -1,0 +1,138 @@
+workout_repository_query:
+  WORKOUT_INSERT_QUERY:
+    "INSERT INTO workouts (date, duration, calories_burned, user_id) VALUES (?, ?, ?, ?)"
+  WORKOUT_UPDATE_QUERY:
+    "UPDATE workouts SET duration = ?, calories_burned = ? WHERE id = ?"
+  WORKOUT_UPDATE_CONCRETE_WORKOUT_TYPE_ID_QUERY:
+    "UPDATE workouts SET concrete_workout_type_id = ? WHERE id = ?"
+  WORKOUT_FIND_BY_ID_QUERY:
+    "SELECT * FROM workouts WHERE id = ?"
+  WORKOUT_FIND_ALL_QUERY:
+      "SELECT w.*, cwp.type_name, cwtp.parameter_name, cwtp.value FROM workouts w 
+      JOIN concrete_workout_types cwp ON w.id = cwp.workout_id 
+      JOIN concrete_workout_type_parameters cwtp ON cwp.id = cwtp.concrete_workout_type_id ORDER BY w.user_id, w.date"
+  WORKOUT_FIND_ALL_DTOS_QUERY:
+      "SELECT 
+           u.username AS user,
+           w.date AS date,
+           w.duration AS duration,
+           w.calories_burned AS calories_burned,
+           cwt.type_name AS concrete_workout_type,
+           w.id AS workout_id,
+           array_agg(cwtp.parameter_name || ': ' || cwtp.value) AS parameters
+       FROM 
+           diary_schema.workouts AS w
+       JOIN 
+           diary_schema.users AS u ON w.user_id = u.id
+       JOIN 
+           diary_schema.concrete_workout_types AS cwt ON w.concrete_workout_type_id = cwt.id
+       JOIN 
+           diary_schema.concrete_workout_type_parameters AS cwtp ON cwt.id = cwtp.concrete_workout_type_id
+       GROUP BY
+           u.username,
+           w.date,
+           w.duration,
+           w.calories_burned,
+           cwt.type_name,
+           w.id
+       ORDER BY
+           u.username,
+           w.date;"
+  WORKOUT_FIND_ALL_DTOS_BY_USER_QUERY:
+      "SELECT 
+           u.username AS user,
+           w.date AS date,
+           w.duration AS duration,
+           w.calories_burned AS calories_burned,
+           cwt.type_name AS concrete_workout_type,
+           w.id AS workout_id,
+           array_agg(cwtp.parameter_name || ': ' || cwtp.value) AS parameters
+       FROM 
+           diary_schema.workouts AS w
+       JOIN 
+           diary_schema.users AS u ON w.user_id = u.id
+       JOIN 
+           diary_schema.concrete_workout_types AS cwt ON w.concrete_workout_type_id = cwt.id
+       JOIN 
+           diary_schema.concrete_workout_type_parameters AS cwtp ON cwt.id = cwtp.concrete_workout_type_id
+       WHERE
+           u.id = ?
+       GROUP BY
+           u.username,
+           w.date,
+           w.duration,
+           w.calories_burned,
+           cwt.type_name,
+           w.id
+       ORDER BY
+           w.date;"
+  WORKOUT_IS_WORKOUT_TYPE_WITH_NAME_AND_USER_ID_AND_DATE_EXISTS_QUERY:
+      "SELECT * FROM workouts AS w JOIN concrete_workout_types AS cwt ON w.concrete_workout_type_id = cwt.id 
+      WHERE w.date = ? AND w.user_id = ? AND cwt.type_name = ?"
+  WORKOUT_FIND_BY_USER_ID_AND_WORKOUT_ID_QUERY:
+      "SELECT 
+                 u.username AS user,
+                 w.date AS date,
+                 w.duration AS duration,
+                 w.calories_burned AS calories_burned,
+                 cwt.type_name AS concrete_workout_type,
+                 w.id AS workout_id,
+                 array_agg(cwtp.parameter_name || ': ' || cwtp.value) AS parameters
+              FROM 
+                 diary_schema.workouts AS w
+              JOIN 
+                 diary_schema.users AS u ON w.user_id = u.id
+              JOIN 
+                 diary_schema.concrete_workout_types AS cwt ON w.concrete_workout_type_id = cwt.id
+              JOIN 
+                 diary_schema.concrete_workout_type_parameters AS cwtp ON cwt.id = cwtp.concrete_workout_type_id
+              WHERE
+                 u.id = ? AND w.id = ?
+              GROUP BY
+                 u.username,
+                 w.date,
+                 w.duration,
+                 w.calories_burned,
+                 cwt.type_name,
+                 w.id
+              ORDER BY
+                 w.date;"
+  WORKOUT_DELETE_QUERY:
+      "DELETE FROM workouts
+       WHERE id = ? AND user_id = ?"
+  GET_TOTAL_DURATION_QUERY:
+      "SELECT SUM(duration) FROM workouts WHERE user_id = ?"
+  GET_TOTAL_CALORIES_BURNED_QUERY:
+      "SELECT SUM(calories_burned) FROM workouts WHERE user_id = ?"
+  GET_TOTAL_CALORIES_BURNED_BY_DATE_QUERY:
+      "SELECT date, SUM(calories_burned) AS total_calories_burned FROM workouts WHERE user_id = ? GROUP BY date"
+  GET_FILTERED_WORKOUTS_QUERY:
+      "SELECT 
+               u.username AS user,
+               w.date AS date,
+               w.duration AS duration,
+               w.calories_burned AS calories_burned,
+               cwt.type_name AS concrete_workout_type,
+               w.id AS workout_id,
+               array_agg(cwtp.parameter_name || ': ' || cwtp.value) AS parameters
+            FROM 
+               diary_schema.workouts AS w
+            JOIN 
+               diary_schema.users AS u ON w.user_id = u.id
+            JOIN 
+               diary_schema.concrete_workout_types AS cwt ON w.concrete_workout_type_id = cwt.id
+            JOIN 
+               diary_schema.concrete_workout_type_parameters AS cwtp ON cwt.id = cwtp.concrete_workout_type_id
+            WHERE 
+               u.id = ? AND w.date >= ? AND w.date <= ? AND cwt.type_name = ?
+            GROUP BY 
+               u.username,
+               w.date,
+               w.duration,
+               w.calories_burned,
+               cwt.type_name,
+               w.id
+            ORDER BY 
+               w.date;"
+
+

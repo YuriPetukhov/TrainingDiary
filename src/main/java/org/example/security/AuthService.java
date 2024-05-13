@@ -2,20 +2,22 @@ package org.example.security;
 
 import org.example.core.domain.User;
 import org.example.core.enums.UserRole;
-import org.example.core.service.UserService;
+import org.example.core.service.impl.UserServiceImpl;
+import org.example.in.validation.InputValidator;
 import org.example.logger.Logger;
 
 import java.io.Console;
-import java.util.List;
-
-import static org.example.in.InputValidator.promptForNonEmptyInput;
+import java.sql.SQLException;
+import java.util.Optional;
 
 /**
  * Сервис для работы с авторизацией и регистрацией пользователей.
  */
 public class AuthService {
 
-    private static final UserService userService = new UserService();
+    private final UserServiceImpl userService = new UserServiceImpl();
+    private final InputValidator inputValidator = new InputValidator();
+    private final Logger logger = new Logger();
 
     /**
      * Регистрирует нового пользователя.
@@ -24,13 +26,13 @@ public class AuthService {
      * @param role     роль пользователя
      * @return зарегистрированный пользователь
      */
-    public static User registerUser(String username, String role) {
+    public User registerUser(String username, String role) throws SQLException {
 
         String password1 = null;
         Console console = System.console();
         if (console == null) {
             System.out.println("Консоль не доступна, поэтому пароль будет выведен на экран.");
-            password1 = promptForNonEmptyInput("Введите пароль:");
+            password1 = inputValidator.promptForNonEmptyInput("Введите пароль:");
         } else {
 
             char[] passwordArray1 = console.readPassword("Введите пароль:");
@@ -49,7 +51,11 @@ public class AuthService {
             userRole = UserRole.ADMIN;
         }
         User user = userService.addUser(username, password1, userRole);
-        Logger.log("Регистрация пользователя", user.getUsername(), true);
+        if (user != null) {
+            logger.log("Регистрация пользователя", user.getUsername(), true);
+        } else {
+            logger.log("Регистрация пользователя", username, false);
+        }
         return user;
     }
 
@@ -59,29 +65,24 @@ public class AuthService {
      * @param username имя пользователя
      * @return аутентифицированный пользователь или null, если пользователь не найден
      */
-    public static User authenticateUser(String username) {
+    public User authenticateUser(String username) throws SQLException {
         Console console = System.console();
         String password = null;
         if (console == null) {
             System.out.println("Консоль не доступна, поэтому пароль будет выведен на экран.");
-            password = promptForNonEmptyInput("Введите пароль:");
+            password = inputValidator.promptForNonEmptyInput("Введите пароль:");
         } else {
             char[] passwordArray = console.readPassword("Введите пароль:");
             password = new String(passwordArray);
         }
 
-        List<User> users = userService.getAllUsers();
-        String finalPassword = password;
-        User currentUser = users.stream()
-                .filter(u -> u.getUsername().equals(username) && u.getPassword().equals(finalPassword))
-                .findFirst()
-                .orElse(null);
-        if (currentUser == null) {
+        Optional<User> optCurrentUser = userService.findByUsername(username);
+        if (optCurrentUser.isPresent() && optCurrentUser.get().getPassword().equals(password)) {
+            logger.log("Авторизация пользователя", optCurrentUser.get().getUsername(), true);
+            return optCurrentUser.get();
+        } else {
             System.out.println("Неверный логин или пароль");
+            return null;
         }
-        Logger.log("Авторизация пользователя", currentUser != null ? currentUser.getUsername() : "Unknown", true);
-        return currentUser;
     }
-
-
 }

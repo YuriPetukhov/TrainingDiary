@@ -1,0 +1,2 @@
+log_repository_query:
+  LOG_SAVE_QUERY: "INSERT INTO logs (action, username, timestamp, success) VALUES (?, ?, ?, ?) RETURNING id"

@@ -1,0 +1,16 @@
+workout_parameter_repository_query:
+  WORKOUT_PARAMETER_SAVE_QUERY:
+    "INSERT INTO workout_type_parameters (parameter_name, workout_type_id) VALUES (?, ?) RETURNING id"
+  WORKOUT_PARAMETER_UPDATE_QUERY:
+    "UPDATE workout_type_parameters SET parameter_name = ? WHERE id = ?"
+  WORKOUT_PARAMETER_FIND_ALL_QUERY:
+    "SELECT * FROM workout_type_parameters"
+  WORKOUT_PARAMETER_FIND_BY_ID_QUERY:
+    "SELECT * FROM workout_type_parameters WHERE id = ?"
+  WORKOUT_PARAMETER_DELETE_QUERY:
+    "DELETE FROM workout_type_parameters WHERE id = ?"
+  WORKOUT_PARAMETER_FIND_BY_NAME_QUERY:
+    "SELECT * FROM workout_type_parameters WHERE parameter_name = ?"
+  WORKOUT_PARAMETER_FIND_ALL_BY_WORKOUT_TYPE_ID_QUERY:
+    "SELECT * FROM workout_type_parameters WHERE workout_type_id = ?"
+

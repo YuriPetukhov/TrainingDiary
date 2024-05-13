@@ -1,0 +1,11 @@
+concrete_workout_type_repository_query:
+  CONCRETE_WORKOUT_TYPE_SAVE_QUERY:
+    "INSERT INTO concrete_workout_types (type_name, workout_id) VALUES (?, ?) RETURNING id"
+  CONCRETE_WORKOUT_TYPE_UPDATE_QUERY:
+    "UPDATE concrete_workout_types SET type_name = ? WHERE id = ?"
+  CONCRETE_WORKOUT_TYPE_FIND_ALL_QUERY:
+    "SELECT * FROM concrete_workout_types"
+  CONCRETE_WORKOUT_TYPE_FIND_BY_ID_QUERY:
+    "SELECT * FROM concrete_workout_types WHERE id = ?"
+  CONCRETE_WORKOUT_TYPE_DELETE_QUERY:
+    "DELETE FROM concrete_workout_types WHERE id = ?"
