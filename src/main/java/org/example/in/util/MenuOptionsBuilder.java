@@ -1,19 +1,18 @@
 package org.example.in.util;
 
+import org.example.config.AppConfig;
 import org.example.config.ConfigReader;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.example.config.AppConfig.FILE_MENUS_PATHS_CONFIG;
-
 public class MenuOptionsBuilder {
 
 
     public List<String> buildMenuOptions(String menuName) {
-
-        Map<String, Object> pathConfig = ConfigReader.readConfig(FILE_MENUS_PATHS_CONFIG);
+        Map<String, String> links = AppConfig.readLinks();
+        Map<String, Object> pathConfig = ConfigReader.readConfig(links.get("FILE_MENUS_PATHS_CONFIG"));
         Map<String, Object> path = (Map<String, Object>) pathConfig.get("menu_files");
         String configFilePath = (String) path.get(menuName);
 

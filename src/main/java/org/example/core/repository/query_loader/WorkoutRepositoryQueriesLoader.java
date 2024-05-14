@@ -1,10 +1,9 @@
 package org.example.core.repository.query_loader;
 
+import org.example.config.AppConfig;
 import org.example.config.ConfigReader;
 
 import java.util.Map;
-
-import static org.example.config.AppConfig.WORKOUT_REPO_QUERY;
 
 public class WorkoutRepositoryQueriesLoader {
 
@@ -28,7 +27,8 @@ public class WorkoutRepositoryQueriesLoader {
     }
 
     public static WorkoutRepositoryQueries loadQueries() {
-        Map<String, Object> config = ConfigReader.readConfig(WORKOUT_REPO_QUERY);
+        Map<String, String> links = AppConfig.readLinks();
+        Map<String, Object> config = ConfigReader.readConfig(links.get("WORKOUT_REPO_QUERY"));
         Map<String, String> queriesMap = (Map<String, String>) config.get("workout_repository_query");
 
         return new WorkoutRepositoryQueriesLoader.WorkoutRepositoryQueries(

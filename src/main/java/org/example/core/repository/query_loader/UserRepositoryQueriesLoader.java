@@ -1,11 +1,9 @@
 package org.example.core.repository.query_loader;
 
+import org.example.config.AppConfig;
 import org.example.config.ConfigReader;
 
 import java.util.Map;
-
-import static org.example.config.AppConfig.USER_REPO_QUERY;
-
 public class UserRepositoryQueriesLoader {
     public static record UserRepositoryQueries(
             String userSaveQuery,
@@ -19,7 +17,8 @@ public class UserRepositoryQueriesLoader {
     }
 
     public static UserRepositoryQueries loadQueries() {
-        Map<String, Object> config = ConfigReader.readConfig(USER_REPO_QUERY);
+        Map<String, String> links = AppConfig.readLinks();
+        Map<String, Object> config = ConfigReader.readConfig(links.get("USER_REPO_QUERY"));
         Map<String, String> queriesMap = (Map<String, String>) config.get("user_repository_query");
 
         return new UserRepositoryQueries(

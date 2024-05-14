@@ -1,0 +1,11 @@
+file_links:
+  FILE_MENUS_PATHS_CONFIG: "src/main/resources/menu/menu-files.yml"
+  LIQUIBASE_CONFIG_FILE: "src/main/resources/liquibase-config.yml"
+  USER_REPO_QUERY: "src/main/resources/query/user-repository-query.yml"
+  WORKOUT_REPO_QUERY: "src/main/resources/query/workout-repository-query.yml"
+  WORKOUT_PARAMETER_REPO_QUERY: "src/main/resources/query/workout-parameter-repository-query.yml"
+  WORKOUT_TYPE_REPO_QUERY: "src/main/resources/query/workout-type-repository-query.yml"
+  CONCRETE_WORKOUT_PARAMETER_REPO_QUERY: "src/main/resources/query/concrete-workout-parameter-repository-query.yml"
+  CONCRETE_WORKOUT_TYPE_REPO_QUERY: "src/main/resources/query/concrete-workout-type-repository-query.yml"
+  LOG_REPO_QUERY: "src/main/resources/query/log-repository-query.yml"
+  CONFIG_FILE: "src/main/resources/config.yml"
